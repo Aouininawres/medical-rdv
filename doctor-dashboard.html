@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docteur - MediPlan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Styles supplémentaires pour le dashboard docteur */
+        .appointments-list {
+            background: white;
+            border-radius: 16px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .appointment-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+        .appt-time {
+            background: #10b981;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+        .appt-patient {
+            font-weight: 600;
+            color: #1e293b;
+            flex: 1;
+        }
+        .appt-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-confirmed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status-waiting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-completed {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .btn-notif {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-profile {
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .logo-sidebar {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-sidebar">
+                <i class="fas fa-stethoscope"></i> MediPlan
+            </div>
+            <nav class="sidebar-nav">
+                <a href="doctor-dashboard.html" class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="agenda.html" class="nav-item">
+                    <i class="fas fa-calendar"></i> Agenda
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i> Patients
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-clock"></i> Disponibilités
+                </a>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dash-header">
+                <h1>Bonjour Dr. Marie</h1>
+                <div class="header-actions">
+                    <button class="btn-notif" onclick="showNotifications()">
+                        <i class="fas fa-bell"></i> <span style="font-size: 0.7rem;">3</span>
+                    </button>
+                    <button class="btn-profile" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <div>RDV Aujourd'hui</div>
+                        <div class="stat-number" data-target="8">8</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-check"></i>
+                        <div>Patients vus</div>
+                        <div class="stat-number" data-target="42">42</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div>Prochain RDV</div>
+                        <div class="stat-number">14:30</div>
+                    </div>
+                </div>
+
+                <div class="appointments-today">
+                    <h2>Rendez-vous d'aujourd'hui</h2>
+                    <div class="appointments-list">
+                        <div class="appointment-item">
+                            <div class="appt-time">09:00</div>
+                            <div class="appt-patient">Sophie Martin</div>
+                            <div class="appt-status status-confirmed">Confirmé</div>
+                        </div>
+                        <div class="appointment-item">
+                            <div class="appt-time">10:30</div>
+                            <div class="appt-patient">Jean Dupont</div>
+                            <div class="appt-status status-confirmed">Confirmé</div>
+                        </div>
+                        <div class="appointment-item">
+                            <div class="appt-time">11:45</div>
+                            <div class="appt-patient">Marie Lambert</div>
+                            <div class="appt-status status-waiting">En attente</div>
+                        </div>
+                        <div class="appointment-item">
+                            <div class="appt-time">14:30</div>
+                            <div class="appt-patient">Pierre Bernard</div>
+                            <div class="appt-status status-confirmed">Confirmé</div>
+                        </div>
+                        <div class="appointment-item">
+                            <div class="appt-time">16:00</div>
+                            <div class="appt-patient">Claire Petit</div>
+                            <div class="appt-status status-completed">Terminé</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showNotifications() {
+            alert('📋 3 nouveaux rappels:\n- RDV Dr. Marie 14:30\n- Consultation Sophie Martin\n- Bilan Jean Dupont');
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

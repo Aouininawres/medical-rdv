@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon agenda - MediPlan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .agenda-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .month-navigation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .month-navigation button {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .month-navigation button:hover {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        .calendar-grid {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #f1f5f9;
+            text-align: center;
+            padding: 1rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .calendar-day {
+            min-height: 100px;
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .calendar-day:hover {
+            background: #f0fdf4;
+        }
+        .calendar-day.today {
+            background: #fef3c7;
+        }
+        .calendar-day.has-appointment {
+            background: #dcfce7;
+        }
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .appointment-badge {
+            background: #10b981;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .appointments-list {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .appointment-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .appointment-card:last-child {
+            border-bottom: none;
+        }
+        .appointment-time {
+            background: #10b981;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .appointment-doctor {
+            font-weight: 600;
+            color: #1e293b;
+            flex: 1;
+        }
+        .appointment-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-confirmed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .btn-filter {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-filter.active {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        .btn-primary-small {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .logo-sidebar {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-sidebar">
+                <i class="fas fa-stethoscope"></i> MediPlan
+            </div>
+            <nav class="sidebar-nav">
+                <a href="patient-dashboard.html" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                </a>
+                <a href="book-appointment.html" class="nav-item">
+                    <i class="fas fa-calendar-plus"></i> Prendre RDV
+                </a>
+                <a href="agenda.html" class="nav-item active">
+                    <i class="fas fa-calendar-alt"></i> Mes rendez-vous
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-file-medical"></i> Mon dossier
+                </a>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dash-header">
+                <h1>Mon agenda</h1>
+                <div class="header-actions">
+                    <button class="btn-primary-small" onclick="window.location.href='book-appointment.html'">
+                        <i class="fas fa-plus"></i> Nouveau rendez-vous
+                    </button>
+                </div>
+            </header>
+
+            <!-- Filtres -->
+            <div style="margin-bottom: 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="btn-filter active" data-filter="all" onclick="filterAppointments('all', this)">Tous</button>
+                <button class="btn-filter" data-filter="confirmed" onclick="filterAppointments('confirmed', this)">Confirmés</button>
+                <button class="btn-filter" data-filter="pending" onclick="filterAppointments('pending', this)">En attente</button>
+            </div>
+
+            <!-- Calendrier -->
+            <div class="calendar-grid">
+                <div class="month-navigation" style="padding: 1rem;">
+                    <button onclick="previousMonth()"><i class="fas fa-chevron-left"></i></button>
+                    <h2 id="currentMonth">Mars 2026</h2>
+                    <button onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-weekdays">
+                    <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+                </div>
+                <div class="calendar-days" id="calendarDays">
+                    <!-- Calendrier généré par JS -->
+                </div>
+            </div>
+
+            <!-- Liste des rendez-vous -->
+            <div class="appointments-list">
+                <h3><i class="fas fa-list"></i> Mes rendez-vous</h3>
+                <div id="appointmentsList">
+                    <div class="appointment-card" data-status="confirmed">
+                        <div>
+                            <div class="appointment-doctor">Dr. Marie Dupont - Cardiologue</div>
+                            <div style="font-size: 0.875rem; color: #64748b;">Lundi 15 Mars 2026 à 14h30</div>
+                        </div>
+                        <div>
+                            <span class="appointment-time">14:30</span>
+                            <span class="appointment-status status-confirmed">Confirmé</span>
+                        </div>
+                    </div>
+                    <div class="appointment-card" data-status="pending">
+                        <div>
+                            <div class="appointment-doctor">Dr. Jean Martin - Généraliste</div>
+                            <div style="font-size: 0.875rem; color: #64748b;">Mercredi 17 Mars 2026 à 10h00</div>
+                        </div>
+                        <div>
+                            <span class="appointment-time">10:00</span>
+                            <span class="appointment-status status-pending">En attente</span>
+                        </div>
+                    </div>
+                    <div class="appointment-card" data-status="confirmed">
+                        <div>
+                            <div class="appointment-doctor">Dr. Sophie Bernard - Dermatologue</div>
+                            <div style="font-size: 0.875rem; color: #64748b;">Vendredi 19 Mars 2026 à 16h00</div>
+                        </div>
+                        <div>
+                            <span class="appointment-time">16:00</span>
+                            <span class="appointment-status status-confirmed">Confirmé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentDate = new Date(2026, 2, 1); // Mars 2026
+        
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const firstDay = new Date(year, month, 1);
+            let startDay = firstDay.getDay();
+            startDay = startDay === 0 ? 7 : startDay;
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const calendarDays = document.getElementById('calendarDays');
+            calendarDays.innerHTML = '';
+            
+            // Jours vides avant le 1er du mois
+            for(let i = 1; i < startDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day';
+                emptyDay.style.background = '#f9fafb';
+                calendarDays.appendChild(emptyDay);
+            }
+            
+            // Jours du mois
+            const today = new Date();
+            const isCurrentMonth = (today.getFullYear() === year && today.getMonth() === month);
+            
+            // Liste des jours avec RDV (15, 17, 19 Mars)
+            const appointmentDays = [15, 17, 19];
+            
+            for(let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                
+                // Vérifier si c'est aujourd'hui
+                if(isCurrentMonth && day === today.getDate()) {
+                    dayElement.classList.add('today');
+                }
+                
+                // Vérifier si le jour a un RDV
+                if(appointmentDays.includes(day) && month === 2) {
+                    dayElement.classList.add('has-appointment');
+                }
+                
+                dayElement.innerHTML = `
+                    <div class="day-number">${day}</div>
+                    ${appointmentDays.includes(day) && month === 2 ? '<div class="appointment-badge">RDV</div>' : ''}
+                `;
+                
+                dayElement.onclick = (function(d) {
+                    return function() { 
+                        alert(`📅 ${d} ${document.getElementById('currentMonth').textContent}\nCliquez pour voir les détails des rendez-vous.`);
+                    };
+                })(day);
+                
+                calendarDays.appendChild(dayElement);
+            }
+            
+            // Afficher le mois en français
+            const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+            document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+        }
+        
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+        
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+        
+        function filterAppointments(filter, element) {
+            // Mettre à jour les boutons actifs
+            const buttons = document.querySelectorAll('.btn-filter');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Filtrer les rendez-vous
+            const appointments = document.querySelectorAll('.appointment-card');
+            appointments.forEach(app => {
+                const status = app.getAttribute('data-status');
+                if(filter === 'all' || status === filter) {
+                    app.style.display = 'flex';
+                } else {
+                    app.style.display = 'none';
+                }
+            });
+        }
+        
+        // Initialiser le calendrier
+        renderCalendar();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - MediPlan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo-center">
+                <i class="fas fa-stethoscope"></i>
+                MediPlan
+            </div>
+            
+            <h1>Créez votre compte</h1>
+            <p>Rejoignez notre plateforme médicale</p>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom complet</label>
+                        <input type="text" id="regName" name="fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="regEmail" name="email" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Téléphone</label>
+                        <input type="tel" id="regPhone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mot de passe</label>
+                        <input type="password" id="regPassword" name="password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary-full">
+                    <i class="fas fa-user-plus"></i>
+                    S'inscrire
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Déjà inscrit ? <a href="login.html">Se connecter</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

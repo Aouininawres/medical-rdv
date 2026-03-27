@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prendre RDV - MediPlan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .main-header .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+        .main-header nav a {
+            text-decoration: none;
+            margin-left: 1rem;
+            color: #64748b;
+        }
+        .appointment-container {
+            padding: 2rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+        .appointment-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .appointment-header h1 {
+            font-size: 2.5rem;
+            color: #1e293b;
+        }
+        .appointment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 1rem;
+        }
+        .date-cell {
+            aspect-ratio: 1;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .date-cell.available:hover {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        .date-cell.selected {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+        .doctor-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .doctor-card.active, .doctor-card:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        .doctor-card img {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+        .availability {
+            margin-left: auto;
+        }
+        .available {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+        .time-slots {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 16px;
+        }
+        .time-slots h4 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        .time-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .time-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .time-btn:hover, .time-btn.selected {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        .confirm-section {
+            text-align: center;
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .appointment-details {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
+        }
+        @media (max-width: 768px) {
+            .appointment-grid {
+                grid-template-columns: 1fr;
+            }
+            .calendar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">MediPlan</div>
+            <nav>
+                <a href="index.html">Accueil</a>
+                <a href="patient-dashboard.html">Mon espace</a>
+                <a href="login.html">Déconnexion</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="appointment-container">
+        <div class="appointment-header">
+            <h1>Prendre rendez-vous</h1>
+            <p>Choisissez une date, un créneau horaire et un docteur</p>
+        </div>
+
+        <div class="appointment-grid">
+            <!-- Calendrier -->
+            <div class="calendar-section">
+                <h3>Sélectionnez une date</h3>
+                <div class="calendar" id="calendar">
+                    <!-- Dates générées par JS -->
+                </div>
+                
+                <!-- Créneaux horaires -->
+                <div class="time-slots" id="timeSlots" style="display: none;">
+                    <h4><i class="fas fa-clock"></i> Créneaux disponibles</h4>
+                    <div class="time-buttons" id="timeButtons">
+                        <!-- Créneaux générés par JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Docteurs -->
+            <div class="doctors-section">
+                <h3>Choisir un docteur</h3>
+                <div class="doctors-list">
+                    <div class="doctor-card" data-doctor="Dr. Marie Dupont" data-specialty="Cardiologue" onclick="selectDoctor('Dr. Marie Dupont', 'Cardiologue', this)">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr Marie">
+                        <div>
+                            <h4>Dr. Marie Dupont</h4>
+                            <p>Cardiologue</p>
+                        </div>
+                        <div class="availability">
+                            <span class="available">3 créneaux</span>
+                        </div>
+                    </div>
+                    <div class="doctor-card" data-doctor="Dr. Jean Martin" data-specialty="Généraliste" onclick="selectDoctor('Dr. Jean Martin', 'Généraliste', this)">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr Jean">
+                        <div>
+                            <h4>Dr. Jean Martin</h4>
+                            <p>Généraliste</p>
+                        </div>
+                        <div class="availability">
+                            <span class="available">5 créneaux</span>
+                        </div>
+                    </div>
+                    <div class="doctor-card" data-doctor="Dr. Sophie Bernard" data-specialty="Dermatologue" onclick="selectDoctor('Dr. Sophie Bernard', 'Dermatologue', this)">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Dr Sophie">
+                        <div>
+                            <h4>Dr. Sophie Bernard</h4>
+                            <p>Dermatologue</p>
+                        </div>
+                        <div class="availability">
+                            <span class="available">2 créneaux</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="confirm-section">
+            <div class="selected-appointment">
+                <h3>Rendez-vous sélectionné</h3>
+                <div class="appointment-details">
+                    <div class="detail-row">
+                        <span>📅 Date:</span>
+                        <span id="selectedDate">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>⏰ Heure:</span>
+                        <span id="selectedTime">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>👨‍⚕️ Docteur:</span>
+                        <span id="selectedDoctor">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>🏥 Spécialité:</span>
+                        <span id="selectedSpecialty">-</span>
+                    </div>
+                </div>
+                <button class="btn-confirm" onclick="confirmAppointment()">
+                    <i class="fas fa-check"></i>
+                    Confirmer le rendez-vous
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedDoctorName = null;
+        let selectedDoctorSpecialty = null;
+        
+        // Créneaux horaires disponibles
+        const timeSlotsList = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'];
+        
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            const dates = [
+                { date: 'Lundi 15', day: 15, month: 2 },
+                { date: 'Mardi 16', day: 16, month: 2 },
+                { date: 'Mercredi 17', day: 17, month: 2 },
+                { date: 'Jeudi 18', day: 18, month: 2 }
+            ];
+            calendar.innerHTML = dates.map(d => 
+                `<div class="date-cell available" data-date="${d.date}" data-day="${d.day}" data-month="${d.month}" onclick="selectDate('${d.date}', ${d.day}, ${d.month}, this)">${d.date}</div>`
+            ).join('');
+        }
+        
+        function selectDate(date, day, month, element) {
+            document.querySelectorAll('.date-cell').forEach(d => d.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedDate = date;
+            selectedTime = null;
+            document.getElementById('selectedDate').textContent = date;
+            document.getElementById('selectedTime').textContent = '-';
+            
+            // Afficher les créneaux horaires
+            showTimeSlots(day, month);
+        }
+        
+        function showTimeSlots(day, month) {
+            const timeSlotsDiv = document.getElementById('timeSlots');
+            const timeButtonsDiv = document.getElementById('timeButtons');
+            
+            // Simuler des disponibilités (certains créneaux indisponibles)
+            let availableSlots = [...timeSlotsList];
+            if (day === 15) availableSlots = availableSlots.filter(t => t !== '17:00');
+            if (day === 17) availableSlots = availableSlots.filter(t => t !== '14:00' && t !== '15:00');
+            
+            timeButtonsDiv.innerHTML = availableSlots.map(time => 
+                `<button class="time-btn" onclick="selectTime('${time}', this)">${time}</button>`
+            ).join('');
+            
+            timeSlotsDiv.style.display = 'block';
+        }
+        
+        function selectTime(time, element) {
+            document.querySelectorAll('.time-btn').forEach(t => t.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTime = time;
+            document.getElementById('selectedTime').textContent = time;
+        }
+        
+        function selectDoctor(doctorName, specialty, element) {
+            document.querySelectorAll('.doctor-card').forEach(d => d.classList.remove('active'));
+            element.classList.add('active');
+            selectedDoctorName = doctorName;
+            selectedDoctorSpecialty = specialty;
+            document.getElementById('selectedDoctor').textContent = doctorName;
+            document.getElementById('selectedSpecialty').textContent = specialty;
+        }
+        
+        function confirmAppointment() {
+            if (!selectedDate) {
+                alert('❌ Veuillez sélectionner une date');
+                return;
+            }
+            if (!selectedTime) {
+                alert('❌ Veuillez sélectionner un créneau horaire');
+                return;
+            }
+            if (!selectedDoctorName) {
+                alert('❌ Veuillez sélectionner un docteur');
+                return;
+            }
+            
+            alert(`✅ Rendez-vous confirmé !\n\n📅 Date: ${selectedDate}\n⏰ Heure: ${selectedTime}\n👨‍⚕️ Docteur: ${selectedDoctorName}\n🏥 Spécialité: ${selectedDoctorSpecialty}\n\nUn email de confirmation vous a été envoyé.`);
+            
+            // Redirection vers l'agenda après confirmation
+            setTimeout(() => {
+                window.location.href = 'agenda.html';
+            }, 2000);
+        }
+        
+        generateCalendar();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

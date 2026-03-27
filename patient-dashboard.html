@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon espace patient - MediPlan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Styles spécifiques patient */
+        .welcome-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 24px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .next-appointment-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            border-left: 5px solid #10b981;
+        }
+        .appointment-info {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64748b;
+        }
+        .info-item i {
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+        .medical-history {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .history-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-date {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .btn-primary-small {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #10b981;
+            color: #10b981;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        .btn-outline:hover {
+            background: #10b981;
+            color: white;
+        }
+        .btn-outline-danger {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .btn-outline-danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-notif, .btn-profile {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-profile {
+            background: #10b981;
+            color: white;
+        }
+        .logo-sidebar {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-sidebar">
+                <i class="fas fa-stethoscope"></i> MediPlan
+            </div>
+            <nav class="sidebar-nav">
+                <a href="patient-dashboard.html" class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                </a>
+                <a href="book-appointment.html" class="nav-item">
+                    <i class="fas fa-calendar-plus"></i> Prendre RDV
+                </a>
+                <a href="agenda.html" class="nav-item">
+                    <i class="fas fa-calendar-alt"></i> Mes rendez-vous
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-file-medical"></i> Mon dossier
+                </a>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dash-header">
+                <h1>Tableau de bord</h1>
+                <div class="header-actions">
+                    <button class="btn-notif" onclick="showNotifications()">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn-profile" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <div>
+                    <h2>Bonjour, Sophie 👋</h2>
+                    <p>Bienvenue sur votre espace patient MediPlan</p>
+                </div>
+                <i class="fas fa-user-md" style="font-size: 4rem; opacity: 0.3;"></i>
+            </div>
+
+            <!-- Prochain rendez-vous -->
+            <div class="next-appointment-card">
+                <h3><i class="fas fa-calendar-check"></i> Prochain rendez-vous</h3>
+                <div class="appointment-info">
+                    <div class="info-item">
+                        <i class="fas fa-user-md"></i>
+                        <span><strong>Dr. Marie Dupont</strong> - Cardiologue</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Lundi 15 Mars 2026</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>14h30</span>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn-outline" onclick="modifyAppointment()">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
+                    <button class="btn-outline btn-outline-danger" onclick="cancelAppointment()">
+                        <i class="fas fa-times"></i> Annuler
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <div>RDV passés</div>
+                    <div class="stat-number" data-target="12">12</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div>RDV à venir</div>
+                    <div class="stat-number" data-target="3">3</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <div>Années patient</div>
+                    <div class="stat-number" data-target="2">2</div>
+                </div>
+            </div>
+
+            <!-- Historique médical -->
+            <div class="medical-history">
+                <h3><i class="fas fa-history"></i> Derniers rendez-vous</h3>
+                <div class="history-item">
+                    <div>
+                        <strong>Consultation cardiologie</strong>
+                        <p style="font-size: 0.875rem; color: #64748b;">Dr. Marie Dupont</p>
+                    </div>
+                    <div class="history-date">15 Février 2026</div>
+                </div>
+                <div class="history-item">
+                    <div>
+                        <strong>Bilan de santé</strong>
+                        <p style="font-size: 0.875rem; color: #64748b;">Dr. Jean Martin</p>
+                    </div>
+                    <div class="history-date">10 Janvier 2026</div>
+                </div>
+                <div class="history-item">
+                    <div>
+                        <strong>Consultation générale</strong>
+                        <p style="font-size: 0.875rem; color: #64748b;">Dr. Sophie Bernard</p>
+                    </div>
+                    <div class="history-date">5 Décembre 2025</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showNotifications() {
+            alert('📋 Vos notifications:\n- Rappel: RDV avec Dr. Dupont demain\n- Votre bilan est disponible\n- Nouveau message du secrétariat');
+        }
+        
+        function modifyAppointment() {
+            window.location.href = 'book-appointment.html';
+        }
+        
+        function cancelAppointment() {
+            if(confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
+                alert('✅ Rendez-vous annulé avec succès');
+                // Ici tu pourras ajouter la logique d'annulation
+            }
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mot de passe oublié - MediPlan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+        }
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+        }
+        .info-text {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .resend-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .resend-link a {
+            color: #10b981;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo-center">
+                <i class="fas fa-stethoscope"></i>
+                <span>MediPlan</span>
+            </div>
+            
+            <h1>Mot de passe oublié ?</h1>
+            <p>Ne vous inquiétez pas, ça arrive !</p>
+            
+            <div class="info-text">
+                <i class="fas fa-envelope"></i> Entrez votre email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+            </div>
+            
+            <form id="forgotPasswordForm" class="auth-form">
+                <div class="form-group">
+                    <label>Adresse email</label>
+                    <input type="email" id="resetEmail" name="email" required placeholder="exemple@email.com">
+                </div>
+                
+                <button type="submit" class="btn-primary-full">
+                    <i class="fas fa-paper-plane"></i>
+                    Envoyer le lien
+                </button>
+            </form>
+            
+            <div id="successMessage" class="success-message">
+                <i class="fas fa-check-circle"></i> Un email de réinitialisation a été envoyé à votre adresse.
+            </div>
+            
+            <div id="errorMessage" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> Aucun compte trouvé avec cette adresse email.
+            </div>
+            
+            <div class="resend-link">
+                <a href="login.html">
+                    <i class="fas fa-arrow-left"></i> Retour à la connexion
+                </a>
+            </div>
+            
+            <div class="auth-footer">
+                <p>Pas de compte ? <a href="register.html">S'inscrire</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('resetEmail').value;
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Cacher les messages précédents
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            // Simulation de vérification email
+            if(email && email.includes('@') && email.includes('.')) {
+                // Simuler l'envoi d'email
+                successMsg.style.display = 'block';
+                document.getElementById('resetEmail').value = '';
+                
+                // Optionnel: redirection après 3 secondes
+                setTimeout(() => {
+                    // window.location.href = 'login.html';
+                }, 3000);
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
