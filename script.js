@@ -15,28 +15,43 @@ function initAll() {
 
 // 1️⃣ MODALS - Ouvrir/Fermer
 function openLogin() {
-    document.getElementById('loginModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeLogin() {
-    document.getElementById('loginModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 }
 
 function openRegister() {
-    document.getElementById('registerModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    const modal = document.getElementById('registerModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeRegister() {
-    document.getElementById('registerModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-    resetRegisterForm();
+    const modal = document.getElementById('registerModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        resetRegisterForm();
+    }
 }
 
 function closeConfirm() {
-    document.getElementById('confirmModal').style.display = 'none';
+    const modal = document.getElementById('confirmModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
 // 2️⃣ Fermer modals en cliquant dehors
@@ -71,7 +86,6 @@ function initScrollAnimations() {
 }
 
 // 4️⃣ Compteurs Stats
-// 4️⃣ Compteurs Stats - Version corrigée
 function initCounters() {
     const statsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -95,7 +109,7 @@ function initCounters() {
 
 function animateCounter(element, target) {
     let current = 0;
-    const duration = 1000; // 1 seconde
+    const duration = 1000;
     const increment = target / (duration / 20);
     const timer = setInterval(() => {
         current += increment;
@@ -114,7 +128,10 @@ function initLoginTabs() {
         tab.addEventListener('click', function() {
             tabs.forEach(t => t.classList.remove('active'));
             this.classList.add('active');
-            document.getElementById('userRole').value = this.dataset.role;
+            const userRole = document.getElementById('userRole');
+            if (userRole) {
+                userRole.value = this.dataset.role;
+            }
         });
     });
 }
@@ -131,7 +148,6 @@ function initLoginForm() {
     }
 }
 
-// 7️⃣ Formulaire Inscription (temporaire sans PHP)
 // 7️⃣ Formulaire Inscription (avec redirection vers confirmation)
 function initRegisterForm() {
     const form = document.getElementById('registerForm');
@@ -147,9 +163,7 @@ function initRegisterForm() {
                 submitBtn.disabled = true;
                 
                 setTimeout(() => {
-                    // Sauvegarder l'email pour la page de confirmation
                     localStorage.setItem('registeredEmail', email);
-                    // Rediriger vers la page de confirmation
                     window.location.href = `confirmation.html?email=${encodeURIComponent(email)}`;
                 }, 1000);
             }
@@ -157,17 +171,51 @@ function initRegisterForm() {
     }
 }
 
+function validateRegister() {
+    const name = document.getElementById('regName');
+    const email = document.getElementById('regEmail');
+    const phone = document.getElementById('regPhone');
+    
+    if (!name || !email || !phone) {
+        alert('❌ Formulaire incomplet');
+        return false;
+    }
+    
+    const nameValue = name.value.trim();
+    const emailValue = email.value;
+    const phoneValue = phone.value;
+    
+    if (nameValue.length < 2) {
+        alert('❌ Nom trop court (2 caractères minimum)');
+        return false;
+    }
+    if (!emailValue.includes('@') || !emailValue.includes('.')) {
+        alert('❌ Email invalide');
+        return false;
+    }
+    if (phoneValue.length < 10) {
+        alert('❌ Téléphone invalide (10 chiffres minimum)');
+        return false;
+    }
+    return true;
+}
+
 function resetRegisterForm() {
     const form = document.getElementById('registerForm');
-    if (form) form.reset();
+    if (form) {
+        form.reset();
+    }
 }
 
 // 8️⃣ Initialisation Modals
 function initModals() {
     document.querySelectorAll('.close').forEach(closeBtn => {
         closeBtn.addEventListener('click', function() {
-            this.closest('.modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            const modal = this.closest('.modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         });
     });
 }
