@@ -132,6 +132,7 @@ function initLoginForm() {
 }
 
 // 7️⃣ Formulaire Inscription (temporaire sans PHP)
+// 7️⃣ Formulaire Inscription (avec redirection vers confirmation)
 function initRegisterForm() {
     const form = document.getElementById('registerForm');
     if (form) {
@@ -140,42 +141,20 @@ function initRegisterForm() {
             if (validateRegister()) {
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
+                const email = document.getElementById('regEmail').value;
                 
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Inscription...';
                 submitBtn.disabled = true;
                 
                 setTimeout(() => {
-                    alert('✅ Inscription réussie ! Veuillez vous connecter.');
-                    window.location.href = 'login.html';
-                }, 1000);
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
+                    // Sauvegarder l'email pour la page de confirmation
+                    localStorage.setItem('registeredEmail', email);
+                    // Rediriger vers la page de confirmation
+                    window.location.href = `confirmation.html?email=${encodeURIComponent(email)}`;
                 }, 1000);
             }
         });
     }
-}
-
-function validateRegister() {
-    const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value;
-    const phone = document.getElementById('regPhone').value;
-    
-    if (name.length < 2) {
-        alert('❌ Nom trop court (2 caractères minimum)');
-        return false;
-    }
-    if (!email.includes('@') || !email.includes('.')) {
-        alert('❌ Email invalide');
-        return false;
-    }
-    if (phone.length < 10) {
-        alert('❌ Téléphone invalide (10 chiffres minimum)');
-        return false;
-    }
-    return true;
 }
 
 function resetRegisterForm() {

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription réussie - MediPlan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .confirmation-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .confirmation-card {
+            background: white;
+            border-radius: 32px;
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            animation: fadeInUp 0.6s ease;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+        }
+        .success-icon i {
+            font-size: 3.5rem;
+            color: white;
+        }
+        .confirmation-card h1 {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        .confirmation-card p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .email-highlight {
+            background: #f1f5f9;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #10b981;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16,185,129,0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e5e7eb;
+            color: #64748b;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-outline:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        .countdown {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        .resend-link {
+            color: #10b981;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="confirmation-card">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            
+            <h1>Inscription réussie ! 🎉</h1>
+            <p>Félicitations ! Votre compte a été créé avec succès.</p>
+            
+            <div class="email-highlight" id="userEmail">
+                <i class="fas fa-envelope"></i> 
+                <span id="emailDisplay">utilisateur@exemple.com</span>
+            </div>
+            
+            <p>
+                <i class="fas fa-envelope-open-text"></i> 
+                Un email de vérification a été envoyé à votre adresse.<br>
+                Veuillez cliquer sur le lien dans l'email pour activer votre compte.
+            </p>
+            
+            <div class="btn-group">
+                <a href="login.html" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Aller à la connexion
+                </a>
+                <a href="index.html" class="btn-outline">
+                    <i class="fas fa-home"></i> Retour à l'accueil
+                </a>
+            </div>
+            
+            <div class="countdown">
+                <span id="timer">60</span> secondes avant de renvoyer l'email • 
+                <span class="resend-link" onclick="resendEmail()">Renvoyer l'email</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Récupérer l'email depuis l'URL ou localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email') || localStorage.getItem('registeredEmail') || 'utilisateur@exemple.com';
+        document.getElementById('emailDisplay').textContent = email;
+        
+        // Timer pour renvoyer l'email
+        let timeLeft = 60;
+        const timerElement = document.getElementById('timer');
+        
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerElement.textContent = "0";
+                document.querySelector('.resend-link').style.opacity = '1';
+                document.querySelector('.resend-link').style.pointerEvents = 'auto';
+            }
+        }, 1000);
+        
+        function resendEmail() {
+            if (timeLeft > 0) {
+                alert(`Veuillez attendre ${timegitLeft} secondes avant de renvoyer l'email.`);
+                return;
+            }
+            alert(`✅ Un nouvel email de vérification a été envoyé à ${email}`);
+            timeLeft = 60;
+            timerElement.textContent = timeLeft;
+            // Redémarrer le timer
+            const newInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(newInterval);
+                }
+            }, 1000);
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
